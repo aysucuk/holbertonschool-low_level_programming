@@ -12,7 +12,7 @@ void print_most_numbers(void)
 
 	for (aysucuk = 48; aysucuk <= 57; aysucuk++)
 	{
-	if (aysucuk != 51 && aysucuk != 53)
+	if (aysucuk != 50 && aysucuk != 52)
 	{
 		_putchar(aysucuk);
 	}
