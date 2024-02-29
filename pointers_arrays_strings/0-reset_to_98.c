@@ -2,13 +2,11 @@
 #include <stdio.h>
 
 /**
- * _memset - etry point
- * @s: variable
- * @b: variable
+ * reset_to_98 - Entry point
+ *
  * @n: variable
- * Return: Always 0 (Success)
+ * Return: Always 0.
  */
-
 void reset_to_98(int *n)
 {
 	*n = 98;
