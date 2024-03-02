@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdio.h>
-/** _strcpy - Copiar el contenido de uno a otra variable
+/**
+ * _strcpy - Copiar el contenido de uno a otra variable
  * @dest: This is destiny
  * @src: This is the copia
  *
