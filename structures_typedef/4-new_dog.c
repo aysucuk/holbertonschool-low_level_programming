@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
-
 /**
  * new_dog - creates new dog
  * @name: dog.name
@@ -14,41 +13,33 @@
  */
 dog_t *new_dog(char *name, float age, char *owner)
 {
-        dog_t *dog = malloc(sizeof(dog_t));
+	int len_name = 0, len_owner = 0;
 
-        if (dog == NULL)
-                return (NULL);
+	dog_t *dog = malloc(sizeof(dog_t));
 
-        size_t name_len = 0;
-        size_t owner_len = 0;
+	if (dog == NULL)
+		return (NULL);
 
-        char *temp_name = name;
-        char *temp_owner = owner;
+	while (*(name + len_name))
+		len_name++;
+	while (*(owner + len_owner))
+		len_owner++;
 
-        while (*temp_name++ != '\0')
-                name_len++;
-        while (*temp_owner++ != '\0')
-                owner_len++;
+	(*dog).name = malloc(sizeof(char) * (len_name + 1));
+	if ((*dog).name == NULL)
+	{
+		free((*dog).name), free(dog);
+		return (NULL);
+	}
 
-        (*dog).name = malloc(name_len + 1);
-        if ((*dog).name == NULL)
-        {
-                free(dog);
-                return (NULL);
-        }
+	(*dog).age = age;
 
-        (*dog).age = age;
-
-        (*dog).owner = malloc(owner_len + 1);
-        if ((*dog).owner == NULL)
-        {
-                free((*dog).name);
-                free(dog);
-                return (NULL);
-        }
-
-        strcpy((*dog).name, name);
-        strcpy((*dog).owner, owner);
-        return (dog);
+	(*dog).owner = malloc(sizeof(char) * (len_owner + 1));
+	if ((*dog).owner == NULL)
+	{
+		free((*dog).owner), free((*dog).name), free(dog);
+		return (NULL);
+	}
+	strcpy((*dog).name, name), strcpy((*dog).owner, owner);
+	return (dog);
 }
-
