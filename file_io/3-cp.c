@@ -17,7 +17,7 @@
 
 void copier(const char *file_from, const char *file_to)
 {
-	int fd, fd2, r = 1, w, c;
+	int fd, fd2, r = 1, c;
 	char *buf = malloc(BUFFER_SIZE);
 
 	fd2 = open(file_from, O_RDONLY);
@@ -31,13 +31,12 @@ void copier(const char *file_from, const char *file_to)
 	while (r > 0)
 	{
 		r = read(fd2, buf, BUFFER_SIZE);
-		w = write(fd, buf, r);
 		if (r == -1)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 			exit(98);
 		}
-		if (fd == -1 || w == -1)
+		if (r == -1)
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to), exit(99);
 	}
 	c = close(fd);
