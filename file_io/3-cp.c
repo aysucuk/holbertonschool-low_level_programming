@@ -5,46 +5,51 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#define BUFFER_SIZE 1024
+#define buffersize 1024
 
 /**
- * copier - copy the content of first argument to another.
+ * copyfile - copy the content of first argument to another.
  *
  * @file_from: source file.
  *
  * @file_to: destination file.
  */
-
-void copier(const char *file_from, const char *file_to)
+void copyfile(const char *file_from, const char *file_to)
 {
-	int fd, fd2, r = 1, c;
-	char *buf = malloc(BUFFER_SIZE);
+	int fdf, fdt, w, r = 1, c;
+	char *buff;
 
-	fd2 = open(file_from, O_RDONLY);
-	if (fd2 == -1)
+	buff = malloc(buffersize);
+	fdf = open(file_from, O_RDONLY);
+	if (fdf == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 		exit(98);
 	}
-	umask(0);
-	fd = open(file_to, O_TRUNC | O_CREAT | O_WRONLY, 0664);
+	fdt = open(file_to, O_TRUNC | O_WRONLY | O_CREAT, 0664);
 	while (r > 0)
 	{
-		r = read(fd2, buf, BUFFER_SIZE);
+		r = read(fdf, buff, buffersize);
+		w = write(fdt, buff, r);
 		if (r == -1)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 			exit(98);
 		}
-		if (r == -1)
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to), exit(99);
+		if (fdt == -1 || w == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
+			exit(99);
+		}
 	}
-	c = close(fd);
+	c = close(fdt);
 	if (c == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd), exit(100);
-	free(buf);
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fdf);
+		exit(100);
+		free(buff);
+	}
 }
-
 /**
  * main - main block.
  *
@@ -54,7 +59,6 @@ void copier(const char *file_from, const char *file_to)
  *
  * Return: always 0.
  */
-
 int main(int argc, char **argv)
 {
 	char *file_from, *file_to;
@@ -63,6 +67,6 @@ int main(int argc, char **argv)
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
 	file_from = argv[1];
 	file_to = argv[2];
-	copier(file_from, file_to);
+	copyfile(file_from, file_to);
 	return (0);
 }
